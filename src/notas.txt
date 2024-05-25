@@ -1,0 +1,109 @@
+
+void get_prompt(t_mini *bsh)
+{
+	char *directory;
+
+	directory = NULL;
+	directory = getcwd(directory, 1000);
+	bsh->prompt = ft_strjoin(directory, "$ ");
+	bsh->cmd_line = readline(bsh->prompt);
+	if (bsh->cmd_line && only_spaces(bsh->cmd_line))
+		add_history(bsh->cmd_line);
+	free(directory);
+}
+
+
+int main(int ac, char **av, char **env)
+{
+	t_mini bsh;
+
+	if (ac != 1)
+		return (1);
+	ft_memset(&bsh,  0, sizeof(t_mini));
+	bsh.env = env;
+	while(1)
+	{
+		get_prompt(&bsh);
+		if (bsh.cmd_line)
+		{
+			analise_cmd(bsh.cmd_line, &bsh);
+		}
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@echo "\n"
+		@echo "${GREEN}//////////  ||  /////  ||    /////////  ||    || /////// \\       \\"
+		@echo "/   //   /  ||  /   /  ||    //         ||    || //      \\       \\"
+		@echo "/   //   /  ||  /   /  ||      ////     |||||||| ////    \\       \\"
+		@echo "/   //   /  ||  /   /  ||          ///  ||    || //      \\       \\ "
+		@echo "/   //   /  ||  /   /  ||    ////////   ||    || /////// \\////// \\//////${default_colour}"
+
+=====================================================================================================================
+
+	typedef struct s_token t_token;
+
+		t_stack	*ft_lstnew(int x)
+{
+	t_stack	*new_node;
+
+	new_node = malloc(sizeof(t_stack));
+	if (!new_node)
+		return (0);
+	new_node->x = x;
+	new_node->next = NULL;
+	return (new_node);
+}
+
+void	delete_lst(t_stack **head, int size)
+{
+	t_stack	*del;
+	int		i;
+
+	i = -1;
+	del = (*head);
+	while (++i < size)
+	{
+		del = del->next;
+		free(*head);
+		(*head) = del;
+	}
+}
+
+t_stack	*ft_lstlast(t_stack *head)
+{
+	t_stack	*tmp;
+
+	if (!head)
+		return (NULL);
+	tmp = head;
+	while (tmp->next != NULL)
+	{
+		tmp = tmp->next;
+	}
+	return (tmp);
+}
+
+int	lst_size(t_stack **head)
+{
+	t_stack	*node;
+	int		size;
+
+	if (!(*head))
+		return (0);
+	node = (*head);
+	size = 0;
+	while (node != NULL)
+	{
+		size++;
+		node = node->next;
+	}
+	return (size);
+}
+
+
+void analise_cmd_line(t_shell *shell, char *cmdline)
+{
+    
+}
