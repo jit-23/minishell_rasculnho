@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 22:18:06 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/05/25 01:41:21 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:58:27 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_token *new_node(char *token, t_type type, t_placing placing) // prev e definid
     t_token *new_node;
 	
     new_node = (t_token *)s_malloc(sizeof(t_token));
-	new_node->token = (char *)s_malloc(sizeof(char *) * 2);
-	new_node->token[1] = '\0';
+	new_node->token = (char *)s_malloc(sizeof(char));
+	new_node->token[0] = '\0';
     new_node->token = ft_strjoin(new_node->token, token);
 	new_node->type = type;
     new_node->placing = placing;
@@ -77,6 +77,11 @@ void	add_to_list(t_lexer *token_list, char *word, t_type type, t_placing placing
 	t_token *head;
 	t_token *prev;
 	t_token *last;
+	//printf("ADD_TO_LIST :\n");
+	//printf("word - %s\n",word);
+	//printf("type - %d\n",type);
+	//printf("placing - %u\n",placing);
+
 	if (!token_list->head)
 	{
 		token_list->head = new_node(word, type, placing);

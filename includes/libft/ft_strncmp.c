@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 21:10:54 by fde-jesu          #+#    #+#             */
-/*   Updated: 2023/11/14 19:54:48 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:48:04 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,12 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 			return (-1);
 		i++;
 	}
+	if (str1[i]  == '\0' && str2[i] != '\0')
+		return (1);
+	if (str1[i]  != '\0' && str2[i] == '\0')
+		return (1);
+	if (i != n)
+		return (1);
 	return (0);
-}
+} 
+
