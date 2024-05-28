@@ -125,3 +125,23 @@ X	D_QUOTE = '\"',
 X	ENV = '$',
 X	PIPE = '|',
 } t_type;
+
+
+
+
+/* 
+init_tree(t_shell *sh)
+{
+    sh->root;
+    t_cmd *cmd;
+    t_token *tmp;
+
+    tmp = sh->token_list->head;
+    cmd = init_exec(sh);
+    sh->root = cmd;
+    while(tmp) // go through the token
+    {
+        if (stop)
+        tmp = tmp->next;
+    }
+} */

@@ -22,7 +22,7 @@ typedef enum e_type
 	DREDIREC = -3, // >>
 	REDIR_IN = '<',
 	REDIR_OUT = '>',
-	SPACE_BAR = ' ', // will be used for space bar(32) && tab ('\t')/(10); 
+	SPACE_BAR = ' ', // will be used for space bar(32 on ascii) && tab ('\t')/(10 on ascii); 
 	NEW_LINE = '\n',
 	S_QUOTE = '\'',
 	D_QUOTE = '\"',

@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 22:18:06 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/05/25 19:58:27 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/05/26 01:50:46 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ t_token *new_node(char *token, t_type type, t_placing placing) // prev e definid
 void	delete_lst(t_token **head, int size)
 {
 	t_token	*del;
-	int		i;
 
-	i = -1;
-	del = (*head);
+	auto int i = -1;
+ 	del = (*head);
 	while (++i < size)
 	{
 		del = del->next;
