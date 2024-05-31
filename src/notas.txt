@@ -145,3 +145,156 @@ init_tree(t_shell *sh)
         tmp = tmp->next;
     }
 } */
+
+
+///////////////////////////////////////////
+///////////////////////////////////////////
+///////////////////////////////////////////
+///////////////////////////////////////////
+///////////////////////////////////////////
+
+/* t_cmd *init_exec(t_shell *sh)
+{
+    t_cmd *cmd;
+
+    cmd = (t_exec *)malloc(sizeof(t_exec));
+    cmd->type = _EXEC;
+    return ((t_cmd *)cmd);
+}
+
+t_cmd *init_redir(t_shell *sh)
+{
+    t_cmd   *cmd;
+
+    cmd = (t_redir *)malloc(sizeof(t_redir));
+    cmd->type = _EXEC;
+    return ((t_cmd *)cmd);
+}
+
+t_cmd *init_redir(t_shell *sh)
+{
+    t_cmd   *cmd;
+
+    cmd = (t_redir *)malloc(sizeof(t_redir));
+    cmd->type = _REDIR;
+    return ((t_cmd *)cmd);
+}
+
+t_cmd *init_pipe(t_shell *sh)
+{
+    t_cmd   *cmd;
+
+    cmd = (t_pipe *)malloc(sizeof(t_pipe));
+    cmd->type = _PIPE;
+    return ((t_cmd *)cmd);
+}
+
+
+void    init_tree(t_shell *sh)
+{
+    int type;
+
+    type = 
+} */
+
+void    init_tree(t_shell *sh, char *cmdl, t_token *head)
+{
+    //t_token **checker;
+    //*checker = &head;
+    t_token *head_tmp;
+    head_tmp = head;
+    /* while loop to check first node/ initial root? */
+    if(head_tmp->type == WORD)
+        sh->root = parse_exec(sh, &head_tmp);
+    /* while loop to check first node? */
+    
+    //printf("%p\n%s\n",head->next, head->token);
+    if (head->next)
+    {
+        printf("there is next\n");
+        create_branches(sh, &head_tmp, &sh->root);
+    }
+    return ;
+    t_pipe *pp;
+    t_exec *execute;
+    pp = (t_pipe *)sh->root;
+    execute = (t_exec *)pp->left;
+    printf("=================\n");
+    printf("%d\n", sh->root->type);
+    //printf("branch (PIPE(1))? = .%d.\n", sh->root->type);
+    //printf("branch (exec(2))? = .%d.\n",execute->type);
+   // function to create the rest of the tree? //
+    //executor
+    return ;
+}
+
+
+////////////////////////////
+int peek_whole_list(t_token *checker,char *find)
+{
+    t_token *tmp;
+    int i;
+    int flag;
+
+    flag = 0;
+    tmp = checker;
+    i = 0;
+    while(tmp)
+    {
+        flag = strncmp(tmp->token, find, ft_strlen(tmp->token));
+        if (flag == 1)
+            return (1);
+        tmp = tmp->next;
+    }
+    return (0);
+}
+
+
+    /* while(head){
+        printf("\033[0;34m");
+        printf("%s=%s\n", head->env_name, head->env_value);
+        printf("\033[0m");
+        
+        printf("%s\n", env[j++]);
+        head = head->next;
+    }
+     */
+
+	 void	fill_list(t_shell *shell, char *cmdl)
+{
+	int i;
+	int t_loops;
+	t_placing place;
+
+
+	t_loops = 0;
+	i = 0;
+	place = DEFAULT;
+	while(cmdl[i])
+	{
+		if 	(cmdl[i] == '\"')
+		{
+			shell->n_dquotes++;
+			if (shell->n_dquotes % 2)
+				place = IN_DQ;
+			i += get_quote(shell, place, '\"');
+		}
+		else if (cmdl[i] == '\'')
+		{
+			shell->n_squotes++;
+			if (shell->n_squotes % 2)
+				place = IN_SQ;
+			i +=  get_quote(shell, place, '\"');
+		}
+		else if (cmdl[i] && !special_char(cmdl[i]) && !is_space(cmdl[i]))
+			i += get_word(cmdl, i, shell, place);
+		else if(cmdl[i] && is_space(cmdl[i]))
+			i += get_space(cmdl, i, shell, place);
+		else if (cmdl[i] && cmdl[i] == '$')
+			i += get_env_var(cmdl, i, shell, place);
+		else if (cmdl[i] && cmdl[i] == '|')
+			i += get_pipe(shell, place);
+		else if (cmdl[i] && cmdl[i] == '>' || cmdl[i] == '<')
+			i += get_redirect_var(cmdl, i, shell, place);
+	}
+}

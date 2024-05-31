@@ -3,8 +3,8 @@ CFLAGS:= #-Wall -Werror -Wextra
 
 HEADER = includes/minishell.h
 GREEN:= \033[0;32m
-BLUE=\033[0;34m
 RED:=\033[0;31m 
+BLUE=\033[0;34m
 default_colour=\033[0m
 
 
@@ -12,7 +12,8 @@ SRC_FILES:=  main.c \
 					analise.c \
 					list_utils.c \
 					token_utils.c \
-					
+					env_expand.c\
+#					init_tree.c\
 
 MAKE:= make -C
 LIBFT_DIR:= includes/libft
@@ -37,19 +38,18 @@ $(OBJ_PATH)%.o : $(SRC_PATH)%.c
 		@mkdir -p ${OBJ_PATH}
 		cc   ${CFLAGS}  -c $< -o $@
 
-
 ${NAME}:  ${OBJ} 
-		${MAKE} ${LIBFT_DIR}
+#		${MAKE} ${LIBFT_DIR}
 		cc  -I. ${CFLAGS} ${OBJ} ${LIBFT} -o ${NAME} -lreadline
-		@echo "${GREEN}executable file: ./minishell${default_colour}\n"
+		@echo "${GREEN}executable file: ./${NAME}${default_colour}\n"
 	
 clean:
-		${MAKE} ${LIBFT_DIR} clean
+#		${MAKE} ${LIBFT_DIR} clean
 		@rm -fr ${OBJ_PATH}
 		@echo "${RED}object files and directory deleted:${default_colour}"
 
 fclean: clean
-		${MAKE} ${LIBFT_DIR} fclean
+#		${MAKE} ${LIBFT_DIR} fclean
 		@rm -f ${NAME}
 		@echo "${RED}executable deleted:$(default_colour)"
 		@echo "${RED}deleted all:$(default_colour)\n"

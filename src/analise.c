@@ -6,20 +6,21 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:01:30 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/05/28 23:25:39 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/05/31 02:52:23 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 /* missing \n and \\ - idk how or what to do */
+
 void	fill_list(t_shell *shell, char *cmdl)
 {
 	int i;
 	int t_loops;
-
-	t_loops = 0;
 	t_placing place;
 
+
+	t_loops = 0;
 	i = 0;
 	place = DEFAULT;
 	while(cmdl[i])
@@ -59,14 +60,16 @@ void	analise_cmd_line(t_shell *shell, char *cmdline)
 	shell->token_list = (t_lexer *)s_malloc(sizeof(t_lexer));
 	ft_memset(shell->token_list, 0, sizeof(t_lexer));
 	fill_list(shell, cmdline);
-	tmp = shell->token_list->head;
-	fill_tree(shell);
-	//while(tmp)
-	//{
-	//	printf("===================\n");
-	//	printf("token   = %s.\n", tmp->token);
-	//	printf("Placing = %u.\n", tmp->placing);
-	//	printf("Type    = %d.\n", tmp->type);
-	//	tmp = tmp->next;
-	//}
+	//tmp = shell->token_list->head;
+	
+	//init_tree(shell, shell->cmd_line, shell->token_list->head);
+	
+	// while(tmp)
+	// {
+		// printf("===================\n");
+		// printf("token   = %s.\n", tmp->token);
+		// printf("Placing = %u.\n", tmp->placing);
+		// printf("Type    = %d.\n", tmp->type);
+		// tmp = tmp->next;
+	// }
 }

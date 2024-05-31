@@ -10,8 +10,60 @@
 # include <unistd.h>
 # include <curses.h>
 # include <term.h>
+#include <stdarg.h>
+
+#include "env.h"
+
+#define BLUE 			\033[0;34m
+#define default_colour	\033[0m
+
+#define _PIPE	1
+#define _EXEC	2
+#define _REDIR	3
 
 typedef struct s_token t_token;
+
+typedef struct s_cmd t_cmd;
+typedef struct s_exec t_exec;
+typedef struct s_pipe t_pipe;
+typedef struct s_redir t_redir;
+
+struct s_cmd
+{
+	int type;
+};
+
+struct s_exec
+{
+	int type;
+	char **args;
+};
+
+struct s_pipe
+{
+	int type;
+	t_cmd *left;
+	t_cmd *right;
+};
+
+struct s_redir
+{
+	int type;
+	t_cmd *cmd;
+	char *file;
+	int mode;
+	int fd;
+};
+
+typedef enum e_placing
+{
+	IN_SQ, // inside single quotes
+	IN_DQ, // inside double quotes
+	DQ_INSIDE_SQ, // ' "" '
+	SQ_INSIDE_DQ, // "" "" '
+	DEFAULT,
+} t_placing;
+
 
 
 /*  im using neg numbers bcs this are not single chars, and like this they do not mix up with ramdom ascii values */
@@ -22,7 +74,7 @@ typedef enum e_type
 	DREDIREC = -3, // >>
 	REDIR_IN = '<',
 	REDIR_OUT = '>',
-	SPACE_BAR = ' ', // will be used for space bar(32 on ascii) && tab ('\t')/(10 on ascii); 
+	SPACE_BAR = ' ', // will be used for space bar(32) && tab ('\t')/(10); 
 	NEW_LINE = '\n',
 	S_QUOTE = '\'',
 	D_QUOTE = '\"',
@@ -30,15 +82,6 @@ typedef enum e_type
 	ENV = '$',
 	PIPE = '|',
 } t_type;
-
-typedef enum e_placing
-{
-	IN_SQ, // inside single quotes
-	IN_DQ, // inside double quotes
-	DEFAULT,
-} t_placing;
-
-
 
 typedef struct s_token
 {
@@ -65,6 +108,8 @@ typedef struct s_shell
 	char **env;
 	int n_dquotes;
 	int n_squotes;
+	t_env *ev;
+	t_cmd *root;
 }t_shell;
 
 /* ====================================================================================================== */
@@ -92,5 +137,15 @@ int			get_redirect_var(char *cmdl, int i, t_shell *sh, t_placing placing);
 void		organize_var_type(t_shell *sh, char *token, t_placing placing);
 int			special_char(char c);
 int			is_space(int c);
+
+/* init_tree.c */
+int peek_spaces(t_token *checker);
+
+void    init_tree(t_shell *sh, char *cmdl, t_token *head);
+//t_cmd *create_branches(t_shell *sh, t_token **checker, t_cmd **root);
+t_cmd *parse_pipe(t_shell *sh, t_token **checker);
+t_cmd *parse_exec(t_shell *sh, t_token **checker);
+int peek_token(t_token *checker,int var_nbr, ...);
+
 
 #endif
