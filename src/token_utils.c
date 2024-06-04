@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 23:00:04 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/05/31 02:52:14 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/06/02 21:17:41 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	get_word(char *cmdl, int i, t_shell *sh, t_placing placing)
 	add_to_list(sh->token_list, og_word, WORD, placing);
 	return (j - i);
 }
-int	get_env_var(char *cmdl, int i, t_shell *sh, t_placing placing)
+char *get_env_str(char *cmdl, int i)
 {
 	int j;
 
@@ -105,8 +105,75 @@ int	get_env_var(char *cmdl, int i, t_shell *sh, t_placing placing)
 		env_var = ft_strjoin(env_var, to_stick);
 		j++;
 	}
-	add_to_list(sh->token_list, env_var, ENV, placing);
-	return (j - i);
+	free(to_stick);
+	return (env_var);
+}
+
+int	valid_env(char *env_var ,t_env *env_head)
+{
+	t_env *head;
+
+	head = env_head;
+	while(head)
+	{
+		if (ft_strncmp(env_var, head->env_name, ft_strlen(env_var)) == 0) // same
+			return (1);
+		head = head->next;	
+	}
+	return (0);
+}
+
+char *expand_env_var(char *env_var , t_env *head)
+{
+	t_env *tmp;
+	char *str;
+
+	str = env_var;
+	tmp = head;
+	env_var++;
+	while(tmp)
+	{
+		if (ft_strncmp(env_var, tmp->env_name, ft_strlen(env_var)) == 0)
+			return (tmp->env_value);
+		tmp = tmp->next;
+	}
+	return (str);
+}
+
+int	get_env_var(char *cmdl, int i, t_shell *sh, t_placing placing)
+{
+	char *env_var;
+	char *expanded_var;
+
+	env_var = get_env_str(cmdl, i);// i get the literal string (ex : '$USER' || '$jdafga')
+	printf("	env-var = %s\n", env_var);
+	if (valid_env(env_var, sh->ev) == 1) // 1 if exist // i check if it exist 
+	{
+		printf("is valid ENV\npacement - %d\n",placing);
+		// then check the placement of it in the cmdl
+		if (placing == IN_SQ)
+		{
+			add_to_list(sh->token_list, env_var, WORD, IN_SQ); // literal string
+		}
+		else
+		{
+			expanded_var = expand_env_var(env_var, sh->ev); // expand string
+			printf("env_var value = %s\n", env_var);
+			add_to_list(sh->token_list, expanded_var, WORD, DEFAULT); // placement dont matter here?
+		}
+	}
+	else // not valid env
+	{
+		if (placing == IN_SQ)
+			add_to_list(sh->token_list, env_var, WORD, IN_SQ); // literal string
+		else
+		{
+			printf("HERE on default2\n");
+			expanded_var = expand_env_var(env_var, sh->ev); // expand string
+			add_to_list(sh->token_list, expanded_var, WORD, DEFAULT); // placement dont matter here?
+		}
+	}
+	return (ft_strlen(env_var));
 }
 
 int get_pipe(t_shell *sh, t_placing placing)

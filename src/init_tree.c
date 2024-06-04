@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 21:09:12 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/05/31 02:07:01 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/06/04 02:09:38 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_cmd *parse_exec(t_shell *sh, t_token **checker)
         else
         {
             cmd_exec->args[i++] = ft_strdup((*checker)->token);
-            //printf("cdm - %s\n",cmd_exec->args[i]);
             *checker = (*checker)->next;
         }
     }

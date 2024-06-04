@@ -298,3 +298,26 @@ int peek_whole_list(t_token *checker,char *find)
 			i += get_redirect_var(cmdl, i, shell, place);
 	}
 }
+
+
+
+
+/////////////////////
+	int j;
+
+	j = i + 1;
+	char *env_var;
+	char *to_stick;
+	to_stick = (char *)s_malloc(sizeof(char) * 2);
+	to_stick[1] = '\0';
+	env_var = (char *)s_malloc(sizeof(char) * 2);
+	env_var[0] = '$';
+	env_var[1] = '\0';
+	while(cmdl[j] && !special_char(cmdl[j]) && !is_space(cmdl[j]))
+	{
+		to_stick[0] = cmdl[j];
+		env_var = ft_strjoin(env_var, to_stick);
+		j++;
+	}
+	add_to_list(sh->token_list, env_var, ENV, placing);
+	return (j - i);
