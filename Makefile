@@ -13,6 +13,7 @@ SRC_FILES:=  main.c \
 					list_utils.c \
 					token_utils.c \
 					env_expand.c\
+					init_AST.c\
 #					init_tree.c\
 
 MAKE:= make -C
