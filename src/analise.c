@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:01:30 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/06/04 20:55:13 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/06/07 23:27:05 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,5 @@ void	analise_cmd_line(t_shell *shell, char *cmdline)
 	printf("root type - %d\n", shell->root->type);
 	printf("---print_tree---\n");
 	print_tree(shell->root);
+	//print_manual(shell->root);
 }

@@ -6,7 +6,7 @@
 /*   By: fde-jesu <fde-jesu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:47:31 by fde-jesu          #+#    #+#             */
-/*   Updated: 2024/06/04 22:24:41 by fde-jesu         ###   ########.fr       */
+/*   Updated: 2024/06/07 23:25:49 by fde-jesu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int peek_future_tokens_type(t_token *head, t_type type)
     tmp = head;
     while(tmp)
     {
-        printf("type token %s\n", tmp->token);
+        //printf("type token %s\n", tmp->token);
         if (tmp->type == type) 
             return (1);
         tmp = tmp->next; 
@@ -99,20 +99,15 @@ t_cmd *exec_parse(t_shell*sh, t_exec *exec_struct)
     while(tmp && (peek_token(tmp, 1, "|") == 0))
     {
         if (peek_token(tmp, 2 , " ", "\t") == 1)
-        {
-            printf("space here .%s. :turned into -> %s\n", tmp->token, tmp->next->token);
             tmp = tmp->next;
+        else
+        {
+            exec_struct->args[i] = ft_strdup(tmp->token);
+            tmp = tmp->next;
+            i++;
         }
-        exec_struct->args[i] = ft_strdup(tmp->token);
-        //printf("exec_struct->args[i++] - %s\n", exec_struct->args[i++]);
-        tmp = tmp->next;
-        i++;
     }
     exec_struct->args[i] = NULL;
-    //if (tmp->next && tmp->token[0] == '|')
-    //    tmp = tmp->next;
-    //printf("tmp ptr - > %s\n", tmp->token);
-
     sh->token_list->head = tmp;
     return ((t_cmd *)exec_struct);
 }
@@ -121,48 +116,34 @@ t_cmd   *pipe_parse(t_shell *sh, t_cmd *left)
 {
     t_pipe *pipe_struct;
 
-    printf("in pipe\n");
     pipe_struct = init_pipe();
-    printf("pipe struct inited\n");
-    
-
     pipe_struct->left = left;
-
     sh->root = (t_cmd *)pipe_struct;
     if (sh->token_list->head->next)
         sh->token_list->head = sh->token_list->head->next;
+//    printf("token no qual comeca a procurar se tem pipes a frente %s.%s.%s\n",sh->token_list->head->prev->token,sh->token_list->head->token, sh->token_list->head->next->token);
     if (peek_future_tokens_type(sh->token_list->head, PIPE))
     {
-        printf("R - pp\n"); 
-        pipe_struct->right =  pipe_parse(sh, (t_cmd *)sh->root);
+        pipe_struct->right = exec_parse(sh, init_exec());
+        pipe_parse(sh ,(t_cmd *)sh->root);
     }
     else if (peek_future_tokens_type(sh->token_list->head, WORD))
-    {
-        printf("R - exec\n");
         pipe_struct->right = exec_parse(sh, init_exec());
-    }
     return ((t_cmd *)pipe_struct);
 }
 
 void    init_AST(t_shell *sh)
 {
-    printf("init_ast\n");
     if (sh->token_list->head->type == WORD)
-    {
-    //    printf("is WORD\n");
         exec_parse(sh, init_exec());
-    }
     if (sh->token_list->head == NULL)
-    {
-        printf("THERE IS NO MORE THAN WORD\n");
         return ;
-    }
     pipe_parse(sh, sh->root);
 }
 
 void print_tree(t_cmd *root)
 {
-    static int i = 0;
+    static int j;
     t_exec *ex;
     t_pipe *pp;
     if (root == NULL)
@@ -172,16 +153,15 @@ void print_tree(t_cmd *root)
         ex = (t_exec *)root;
         for (int i = 0; ex->args[i]; i++)
         {
-            printf("args - %s\n",ex->args[i]);
+            printf("%d - args - %s\n",j ,ex->args[i]);
         }
-        
-        i++;
+        j++;
     }
     else if (root->type == _PIPE)
     {
         pp = (t_pipe *)root;
-        printf("%d pipe - | \n", i);
-        i++;
+        printf("%d pipe - | \n", j);
+        j++;
         print_tree((t_cmd *)pp->left);
         print_tree((t_cmd *)pp->right);
     }
