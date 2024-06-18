@@ -14,6 +14,8 @@ SRC_FILES:=  main.c \
 					token_utils.c \
 					env_expand.c\
 					init_AST.c\
+					destroy_utils.c\
+					destroy_all.c\
 #					init_tree.c\
 
 MAKE:= make -C
